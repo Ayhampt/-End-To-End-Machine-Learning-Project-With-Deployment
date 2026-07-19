@@ -17,7 +17,7 @@ def get_requirements(file_path: str) -> List[str]:
 
 
 setup(
-    name=" End To End Machine Learning Project",
+    name="End To End Machine Learning Project",
     author="ayham",
     version=1.0,
     packages=find_packages(),
