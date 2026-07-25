@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Mark Prediction</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa, #e4ecf7);
+        margin: 0;
+        padding: 0;
+        color: #23374d;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 40px auto;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      h1 {
+        margin-top: 0;
+        color: #1f4e79;
+        text-align: center;
+      }
+
+      p {
+        text-align: center;
+        color: #5c6b7a;
+        margin-bottom: 24px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #334e68;
+      }
+
+      input,
+      select {
+        padding: 10px 12px;
+        border: 1px solid #cfd8e3;
+        border-radius: 8px;
+        font-size: 14px;
+        outline: none;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: #2b7bd6;
+        box-shadow: 0 0 0 2px rgba(43, 123, 214, 0.15);
+      }
+
+      .full-width {
+        grid-column: 1 / -1;
+      }
+
+      button {
+        margin-top: 16px;
+        padding: 12px 18px;
+        background: #1f4e79;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #173d63;
+      }
+
+      .note {
+        margin-top: 16px;
+        font-size: 13px;
+        color: #6b7a8f;
+        text-align: center;
+      }
+
+      .result-box {
+        margin-top: 20px;
+        padding: 14px 16px;
+        background: #eef7ee;
+        border: 1px solid #b8e0b8;
+        border-radius: 10px;
+        text-align: center;
+        color: #2f6b2f;
+        font-weight: 600;
+      }
+
+      @media (max-width: 700px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Student Mark Prediction</h1>
+      <p>
+        Enter the student characteristics below to estimate the predicted math
+        score.
+      </p>
+
+      <form action="/predict" method="post">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+              <option value="">Select gender</option>
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="race_ethnicity">Race / Ethnicity</label>
+            <select id="race_ethnicity" name="race_ethnicity" required>
+              <option value="">Select group</option>
+              <option value="group A">Group A</option>
+              <option value="group B">Group B</option>
+              <option value="group C">Group C</option>
+              <option value="group D">Group D</option>
+              <option value="group E">Group E</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="parental_level_of_education"
+              >Parental Level of Education</label
+            >
+            <select
+              id="parental_level_of_education"
+              name="parental_level_of_education"
+              required
+            >
+              <option value="">Select education level</option>
+              <option value="associate's degree">Associate's Degree</option>
+              <option value="bachelor's degree">Bachelor's Degree</option>
+              <option value="high school">High School</option>
+              <option value="master's degree">Master's Degree</option>
+              <option value="some college">Some College</option>
+              <option value="some high school">Some High School</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="lunch">Lunch Type</label>
+            <select id="lunch" name="lunch" required>
+              <option value="">Select lunch type</option>
+              <option value="standard">Standard</option>
+              <option value="free/reduced">Free / Reduced</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="test_preparation_course">Test Preparation Course</label>
+            <select
+              id="test_preparation_course"
+              name="test_preparation_course"
+              required
+            >
+              <option value="">Select option</option>
+              <option value="none">None</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="reading_score">Reading Score</label>
+            <input
+              type="number"
+              id="reading_score"
+              name="reading_score"
+              min="0"
+              max="100"
+              step="1"
+              required
+            />
+          </div>
+
+          <div class="form-group full-width">
+            <label for="writing_score">Writing Score</label>
+            <input
+              type="number"
+              id="writing_score"
+              name="writing_score"
+              min="0"
+              max="100"
+              step="1"
+              required
+            />
+          </div>
+
+          <div class="form-group full-width">
+            <button type="submit">Predict Math Score</button>
+          </div>
+        </div>
+      </form>
+
+      {% if results is not none %}
+      <div class="result-box">
+        Predicted Math Score: <strong>{{ results }}</strong>
+      </div>
+      {% endif %}
+
+      <div class="note">
+        The prediction model uses the fields above to estimate the student's
+        math score.
+      </div>
+    </div>
+  </body>
+</html>
